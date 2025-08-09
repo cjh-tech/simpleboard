@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="boardMapper">
+   <insert id = "insert">
+   		 INSERT INTO MP_BOARD(  BNO , TITLE , CONTENT, WRITER  )
+	                 VALUES(  MP_BOARD_SEQ.NEXTVAL , #{title} , #{content} , #{writer}  )
+   </insert>
+   
+   <select id ="list" resultType="com.simpleboard.vo.BoardVO">
+   		SELECT   BNO , TITLE , WRITER , REGDATE
+		  FROM MP_BOARD
+		  ORDER BY BNO DESC
+   </select>
+   
+   <select id="read" parameterType="int" resultType="com.simpleboard.vo.BoardVO">
+   		SELECT	BNO  , TITLE  , CONTENT , WRITER , REGDATE
+			 FROM MP_BOARD
+		 WHERE BNO = #{bno}
+   </select>
+   
+    <update id="update" parameterType="com.simpleboard.vo.BoardVO">
+		UPDATE MP_BOARD
+		   SET TITLE    =   #{title}
+		   ,CONTENT  =   #{content}
+		 WHERE BNO = #{bno} 
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		DELETE 
+		  FROM MP_BOARD
+		 WHERE BNO = #{bno}
+	</delete>
+	
+	<select id="listPage" resultType="com.simpleboard.vo.BoardVO" parameterType="com.simpleboard.vo.Criteria">
+		SELECT  BNO, 
+		        TITLE, 
+		        CONTENT,
+		        WRITER, 
+		        REGDATE
+		 FROM ( 
+		        SELECT BNO, 
+		               TITLE, 
+		               CONTENT, 
+		               WRITER, 
+		               REGDATE, 
+		               ROW_NUMBER() OVER(ORDER BY BNO DESC) AS RNUM <!-- ROW_NUMBER() over() 함수 ->특정 컬럼 기준으로 순위정하기  -->
+		         FROM MP_BOARD 
+		         where 1=1
+		         	<include refid="search"></include>   
+		                       ) MP
+		WHERE RNUM BETWEEN #{rowStart} AND #{rowEnd}
+		ORDER BY BNO DESC
+	</select>
+   
+   <select id="listCount" resultType="int">
+   			SELECT COUNT(BNO)
+   				FROM MP_BOARD
+   				WHERE 1 = 1 
+   			<include refid = "search"></include> <!--  아래 sql id ="search를 포함하고 있음 -->
+   			AND BNO <![CDATA[ > ]]> 0
+   </select>
+   
+   <sql id="search">  
+   	<if test="searchType != null">  <!-- searchType이라는 파라미터가 null이 아닐때 -->
+   		<if test="searchType == 't'.toString()">AND TITLE LIKE '%' || #{keyword} || '%'</if> <!-- searchType 의 값이 t의 값과 같을때  (|| 문자열 붙이기) 아마 앞뒤로 % 붙이기-->
+   		<if test="searchType == 'c'.toString()">AND CONTENT LIKE '%' || #{keyword} || '%' </if>
+   		<if test="searchType == 'w'.toString()">AND WRITER LIKE '%' || #{keyword} || '%'</if>
+   		<if test="searchType == 'tc'.toString()">AND (TITLE LIKE '%' || #{keyword} || '%') or (CONTENT LIKE '%' || #{keyword} || '%')</if>
+   	</if>
+   </sql>
+      
+</mapper>

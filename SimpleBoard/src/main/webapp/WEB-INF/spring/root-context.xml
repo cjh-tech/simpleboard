@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.1.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	
+	<!-- 로컬 오라클 데이터베이스 연결  -->
+    <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+		<property name="url" value="jdbc:oracle:thin:@//localhost:1521/XE"/>
+		<property name="username" value="C##simpleboard"/>
+		<property name="password" value="1234"/>
+	</bean>  	
+	
+	<!-- RDS용  (rds 돈 내는 운영) 오라클 데이터베이스 연결 -->
+	<!--<bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+		<property name="url" value="jdbc:oracle:thin:@simpleboard.cxnmhjtu6vag.us-east-2.rds.amazonaws.com:1521:ORCL"/>
+		<property name="username" value="admin"/>
+		<property name="password" value="linux8754!"/>
+	</bean>	 -->
+	
+	<!-- mybatis 연동  -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="configLocation" value="classpath:/mybatis-config.xml"/>
+		<property name="mapperLocations" value="classpath:mappers/*.xml"/>
+	</bean>
+	
+	<!-- sqlSession 이라는 객체(빈) 생성으로 dao부분에서 sqlSession에 Inject 함  -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
+	</bean>
+	
+	<!--  스케쥴러 관련 설정추가 task를 현재 root-context 파일에서 추가해서 이부분때문에 한번더 스캔하는게 아닌가하는 추측  -->		
+    <context:component-scan base-package="com.simpleboard" />
+    <task:annotation-driven/>
+</beans>
