@@ -10,17 +10,16 @@
 	 	
 	 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<title>회원탈퇴</title>
-	</head>
-	<script type="text/javascript">
+		<script type="text/javascript">
 		$(document).ready(function(){
 			// 취소
-			$(".cencle").on("click", function(){
+			$("#cancel").on("click", function(){
 				
 				location.href = "/home/main";
 						    
-			})
-		
-			$("#submit").on("click", function(){
+			});
+		    // 회원탈퇴버튼
+			$("#leave").on("click", function(){
 				if($("#userPass").val()==""){
 					alert("비밀번호를 입력해주세요.");
 					$("#userPass").focus();
@@ -31,44 +30,47 @@
 					type : "POST",
 					dataType : "json",
 					data : $("#delForm").serializeArray(),
+					
 					success: function(data){
 						
-						if(data==0){
+						if(data.result == 0){
 							alert("패스워드가 틀렸습니다.");
 							return;
 						}else{
 							if(confirm("회원탈퇴하시겠습니까?")){
-								$("#delForm").submit();
+							$("#delForm").submit();
+								
 							}
 							
 						}
 					}
 				})
 					
-			});
-		
-				
+			 });
 			
-		})
-	</script>
+		 })
+		</script>
+	
+	</head>
+	
 	<body>
-		<div style="position:relative; left:40%; top:180px;" >
-			<form action="/home/memberDelete" method="post" id="delForm">
-				<div class="form-group has-feedback">
-					<label class="control-label" for="userId">아이디</label>
+		<div>
+			<form method="post" id="delForm" action="/home/memberDelete" >
+				<div>
+					<label for="userId">아이디</label>
 					<input type="text" id="userId" name="userId" value="${member.userId}" readonly="readonly"/>
 				</div>
-				<div class="form-group has-feedback">
-					<label class="control-label" for="userPass">패스워드</label>
+				<div>
+					<label for="userPass">패스워드</label>
 					<input type="password" id="userPass" name="userPass" />
 				</div>
-				<div class="form-group has-feedback">
-					<label class="control-label" for="userName">성명</label>
+				<div>
+					<label for="userName">성명</label>
 					<input type="text" id="userName" name="userName" value="${member.userName}" readonly="readonly"/>
 				</div>
-				<div class="form-group has-feedback">
-					<button class="btn btn-success" type="button" id="submit">회원탈퇴</button>
-					<button class="cencle btn btn-danger" type="button">취소</button>
+				<div>
+					<button type="submit" id="leave">회원탈퇴</button>
+					<button type="button" id="cancel" >취소</button>
 				</div>
 			</form>
 			<div>

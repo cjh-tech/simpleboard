@@ -40,21 +40,17 @@ public class HeatApiGet {
 		NodeList nodeList = doc.getElementsByTagName("row");
 				
 		List<String> listdata = new LinkedList<String>();
-		int tmp = 0;
+		
 		for(int i = 0; i <nodeList.getLength(); i++) {
 			Node nNode = nodeList.item(i); // 궁금증
 		    	    
 		    if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                 Element element = (Element) nNode; //왜 하는거지?
                 listdata.add(i, element.getElementsByTagName("tot").item(0).getTextContent());
-                
+                // 우선 되기는 하지만 궁금한 부분이 있다
                 }
 		}
-		
-		
-		
-						
-		
+				
 		return listdata;
 	
 		

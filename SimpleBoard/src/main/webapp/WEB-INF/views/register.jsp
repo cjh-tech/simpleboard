@@ -10,12 +10,16 @@
 	 	<!-- jquery -->
 	 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	 	
-		<title>회원가입</title>
+	 	<!--  css update -->
+		<link href="resources/css/update.css?after" rel="stylesheet" type="text/css">
+		<link href="resources/css/loginjoin.css?after" rel="stylesheet" type="text/css">
+	 	
+		<title>SimpleBoardPortFolio</title>
 	</head>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			// 취소
-			$(".cencle").on("click", function(){
+			$(".cancel").on("click", function(){
 				
 				location.href = "/home/api";
 						    
@@ -59,25 +63,60 @@
 		}
 	</script>
 	<body>
-	 <div class="container">
-		<div style="position:relative; left:40%; top:180px;">
-			<form action="/home/register" method="post" id="regForm">
-				<div class="form-group has-feedback">
-					<label class="control-label" for="userId">아이디</label><br/>
-					<input type="text" id="userId" name="userId" />
+		<div class ="fixed">
+         <div>
+          <a class="title" href="#">SimpleBoard</a>
+        
+          <ul class="navigation1">
+            <li class="menu"><a href="/home/api">API사용</a></li>
+            <li class="menu"><a href="/home/list">게시판</a></li>
+          	<li class="menu"><a href="/home/main">ReadMe</a></li>
+          </ul>
+          
+          <ul class="lognavigation">
+          	<c:if test="${member != null}">	
+          		<li class="menu">${member.userId}님</li>
+          	</c:if>
+          </ul>
+          <ul class="navigation2">
+            <c:if test="${member != null}"> <!-- 세션에 있는것 씀  -->
+				<li class="menu"><a href="/home/logout" id="log">로그아웃</a></li>
+			</c:if> 
+			<c:if test="${member == null}">
+				<li class="menu"><a href="/home/login" id="log">로그인</a></li>
+			</c:if>
+			<c:if test="${member != null}">
+				<li class="menu"><a href="/home/memberUpdateView">마이페이지</a></li>
+			</c:if>
+			<c:if test="${member == null}">
+				 <li class="menu"><a href="/home/register">회원가입</a></li>
+			</c:if>
+          </ul>
+         </div>
+		</div>
+		
+	 <div class="bodyjoin">
+		<div class="joinform1">
+			<form action="/home/register" method="post" class="joinform2" id="regForm"  >
+				<div class="joinid">
+				<h2>Sign up</h2>
+				</div>
+				<div class ="joinid">
+					<label for="userid">아이디</label><br>
+					<input type="text" id="userId" name="userId" class="input2">
 					<button class="idChk" type="button" id="idChk" onclick="fn_idChk();" value="N">중복확인</button>
 				</div>
-				<div class="form-group has-feedback">
-					<label class="control-label" for="userPass">패스워드</label><br/>
-					<input type="password" id="userPass" name="userPass" />
+				<div class ="joinid">
+					<label for="userPass">패스워드</label><br/>
+					<input type="password" id="userPass" name="userPass" class="input2"/>
 				</div>
-				<div class="form-group has-feedback">
-					<label class="control-label" for="userName">성명</label><br/>
-					<input type="text" id="userName" name="userName" />
+				<div class ="joinid">
+					<label for="userName">성명</label><br/>
+					<input type="text" id="userName" name="userName" class="input2"/>
 				</div>
-				<div class="form-group has-feedback">
-					<button class="btn btn-success" type="submit" id="submit">회원가입</button>
-					<button class="cencle btn btn-danger" type="button">취소</button>
+				<div>
+					<button type="submit" id="submit">회원가입</button>
+					<button class="cancel btn btn-danger" type="button">취소</button>
 				</div>
 			</form>
 		</div>

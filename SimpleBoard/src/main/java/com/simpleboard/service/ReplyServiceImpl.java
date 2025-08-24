@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import com.simpleboard.dao.ReplyDAO;
+import com.simpleboard.vo.BoardVO;
 import com.simpleboard.vo.ReplyVO;
 
 @Service 
@@ -33,6 +34,11 @@ public class ReplyServiceImpl implements ReplyService{
 	@Override
 	public void deleteReply(ReplyVO vo) throws Exception {
 		dao.deleteReply(vo);
+	}
+	
+	@Override
+	public void deleteAllReply(BoardVO vo) throws Exception{
+		dao.deleteAllReply(vo);
 	}
 
 	@Override

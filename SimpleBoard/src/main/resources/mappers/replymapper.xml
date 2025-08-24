@@ -32,10 +32,17 @@
 		WHERE RNO = #{rno}
 	</update>
 
-	<!-- 댓글 삭제 -->
+	
+	<!-- 해당 댓글만 삭제 -->
 	<delete id="deleteReply" parameterType="com.simpleboard.vo.ReplyVO">
 		DELETE FROM MP_REPLY
 		WHERE RNO = #{rno}
+	</delete>
+	
+	<!-- 하나의 게시글의 모든 댓글 삭제 -->
+	<delete id="deleteAllReply" parameterType="com.simpleboard.vo.BoardVO">
+		DELETE FROM MP_REPLY
+		WHERE BNO = #{bno}
 	</delete>
 	
 	<!-- 선택된 댓글 조회 -->

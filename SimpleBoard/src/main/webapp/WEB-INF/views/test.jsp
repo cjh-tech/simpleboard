@@ -3,20 +3,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="resources/test.css">
+    <style>
+	  div{
+	  	width:100px;
+	  	height:100px;
+	  	background-color:red;
+	  	
+	  	border:10px solid black;
+	  	margin:10px; 
+	  	padding:30px;
+	  }
+	
+	</style>
 </head>
-<style>
-	#test{
-		color:red;
-	}
-	
-	
-</style>
 <body>
    <div>
-   	<p id="test">아이디</p>
-    <p name ="test">네임</p>
-   	<p class ="test">클래스</p>
    </div>
 </body>
 </html>

@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.simpleboard.vo.BoardVO;
 import com.simpleboard.vo.ReplyVO;
 
 @Repository
@@ -37,6 +38,12 @@ public class ReplyDAOImpl implements ReplyDAO{
 	@Override
 	public void deleteReply(ReplyVO vo) throws Exception{
 		sql.delete("replyMapper.deleteReply", vo);
+	}
+	
+	//한개의 게시판에서 모든 댓글 삭제
+	@Override
+	public void deleteAllReply(BoardVO vo)throws Exception{
+		sql.delete("replyMapper.deleteAllReply", vo);
 	}
 	
 	// 선택된 댓글 조회

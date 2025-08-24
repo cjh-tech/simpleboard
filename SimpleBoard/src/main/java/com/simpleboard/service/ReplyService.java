@@ -3,6 +3,7 @@ package com.simpleboard.service;
 
 import java.util.List;
 
+import com.simpleboard.vo.BoardVO;
 import com.simpleboard.vo.ReplyVO;
 
 
@@ -19,6 +20,9 @@ public interface ReplyService {
 	
 	//댓글 삭제
 	public void deleteReply(ReplyVO vo) throws Exception;
+	
+	// 한개의 게시판에서 모든 댓글 삭제
+	public void deleteAllReply(BoardVO vo) throws Exception;
 	
 	// 선택된 댓글조회
 	public ReplyVO selectReply(int rno) throws Exception;

@@ -6,7 +6,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 	
-	 	<title>게시판</title>
+	 	<title>SimpleBoardPortFolio</title>
 	 	
 	 	<!-- 부트스트랩 CSS -->
 	 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
@@ -19,6 +19,9 @@
 	 	<style type ="text/css">
 	 		li {list-style: none; float: left; }
 	 	</style>
+	 	
+	 	<!--  css update -->
+		<link href="resources/css/update.css" rel="stylesheet" type="text/css">
 	 	
 	 	<script type="text/javascript">
 	 	$(document).ready(function(){
@@ -44,89 +47,80 @@
 	
 	
 	<body>
-		<div class="container">
-			<div class="navbar-header">
-	          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-	            <span class="sr-only">Toggle navigation</span>
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-	          </button>
-       		   <a class="navbar-brand" href="#">SimpleBoard</a>
-	        </div>
-	        <div id="navbar" class="navbar-collapse collapse">
-	          <ul class="nav navbar-nav">
-	            <li><a href="/home/api">API사용</a></li>
-           		<li><a href="/home/list">게시판</a></li>
-          	    <li><a href="/home/main">ReadMe</a></li>
-	          </ul>
-	          <ul class="nav navbar-nav navbar-right">
-	            <c:if test="${member != null}"> <!-- member는 세션에 있는것을 가져오는듯함 !! -->
-				<li>${member.userId}님 안녕하세요.</li>
-				<li><a href="/home/logout" id="log">로그아웃</a></li>
-				</c:if>
-				<c:if test="${member == null}">
-					<li><a href="/home/login" id="log">로그인</a></li>
-				</c:if>
-				<c:if test="${member != null}">
-					<li class="active"><a href="/home/memberUpdateView">마이페이지</a></li>
-				</c:if>
-				<c:if test="${member == null}">
-					 <li class="active"><a href="/home/register">회원가입</a></li>
-				</c:if>
-	          </ul>
-	        </div><!--/.nav-collapse -->
+		<div class ="fixed">
+          <div>
+          <a class="title" href="#">SimpleBoard</a>
+        
+          <ul class="navigation1">
+            <li class="menu"><a href="/home/api">API사용</a></li>
+            <li class="menu"><a href="/home/list">게시판</a></li>
+          	<li class="menu"><a href="/home/main">ReadMe</a></li>
+          </ul>
+          
+          <ul class="lognavigation">
+          	<c:if test="${member != null}">	
+          		<li class="menu">${member.userId}님</li>
+          	</c:if>
+          </ul>
+          <ul class="navigation2">
+            <c:if test="${member != null}"> <!-- 세션에 있는것 씀  -->
+				<li class="menu"><a href="/home/logout" id="log">로그아웃</a></li>
+			</c:if> 
+			<c:if test="${member == null}">
+				<li class="menu"><a href="/home/login" id="log">로그인</a></li>
+			</c:if>
+			<c:if test="${member != null}">
+				<li class="menu"><a href="/home/memberUpdateView">마이페이지</a></li>
+			</c:if>
+			<c:if test="${member == null}">
+				 <li class="menu"><a href="/home/register">회원가입</a></li>
+			</c:if>
+          </ul>
+          </div>
+		 </div>
+		
+	   <div style="position:relative; top:100px; width: 50%; margin: 0 auto;">			
+		
+		  <form role="form" method="get" >
+			 <table class="table table-hover">
+				<tr>
+					<th>번호</th><th>제목</th><th>작성자</th><th>등록일</th>
+				</tr>
+				<!-- 홈 컨트롤러에서 보내줌   -->
+				<c:forEach items="${list}" var = "list"> <!--  -->
+					<tr>
+						<td><c:out value="${list.bno}" /></td>
+						<td>
+							<a href="/home/readView?bno=${list.bno}&page=${scri.page}&perPageNum=${scri.perPageNum}&searchType=${scri.searchType}">
+							<c:out value="${list.title}" />          <!--scri넘겨준것에서 list안의 데이터를 꺼내서 씀 페이지부분-->
+							</a>
+						</td>
+						<td><c:out value="${list.writer}" /></td>
+						<td><fmt:formatDate value="${list.regdate}" pattern="yyyy-MM-dd"/></td>
+					</tr>
+				</c:forEach>
+			  </table>
 			
-			<div style="position:relative; left:15px" >
-				<button id="writeBtn" type="button" class="btn">글작성</button>
-			</div>
-			   <div style="position:relative; top:10px">			
+			<!-- 검색부분  -->
+				<div>
+				    <div >
+				    <select name="searchType"  class="searchOption">
+				      <option value="n"<c:out value="${scri.searchType == null ? 'selected' : ''}"/>>---</option>
+				      <option value="t"<c:out value="${scri.searchType eq 't' ? 'selected' : ''}"/>>제목</option>
+				      <option value="c"<c:out value="${scri.searchType eq 'c' ? 'selected' : ''}"/>>내용</option>
+				      <option value="w"<c:out value="${scri.searchType eq 'w' ? 'selected' : ''}"/>>작성자</option>
+				      <option value="tc"<c:out value="${scri.searchType eq 'tc' ? 'selected' : ''}"/>>제목+내용</option>
+				    </select><!--  selected는 미리 선택되는것  value에서의 값이 scri의 searchType에 -->  
+				      <input type="text" name="keyword" class="input" id="keywordInput" value="${scri.keyword}" /> 
+				      <button id="searchBtn" type="button" class="search">검색</button>                                                    
+					  <button id="writeBtn" type="button" class="write">글작성</button> 	
+					</div>
+				   
+			    </div>
 				
-				<form role="form" method="get" >
-					<table class="table table-hover">
-						<tr><th>번호</th><th>제목</th><th>작성자</th><th>등록일</th>
-						
-						</tr>
-						<!-- 홈 컨트롤러에서 보내줌   -->
-						<c:forEach items="${list}" var = "list"> <!--  -->
-							<tr>
-								<td><c:out value="${list.bno}" /></td>
-								<td>
-									<a href="/home/readView?bno=${list.bno}&page=${scri.page}&perPageNum=${scri.perPageNum}&searchType=${scri.searchType}">
-									<c:out value="${list.title}" />          <!--scri넘겨준것에서 list안의 데이터를 꺼내서 씀 페이지부분-->
-									</a>
-								</td>
-								<td><c:out value="${list.writer}" /></td>
-								<td><fmt:formatDate value="${list.regdate}" pattern="yyyy-MM-dd"/></td>
-							</tr>
-						</c:forEach>
-					</table>
-				
-				<!-- 검색부분  -->
-					<div class="search row">
-					    <div class="col-xs-2 col-sm-2">
-					    <select name="searchType" class="form-control">
-					      <option value="n"<c:out value="${scri.searchType == null ? 'selected' : ''}"/>>-----</option>
-					      <option value="t"<c:out value="${scri.searchType eq 't' ? 'selected' : ''}"/>>제목</option>
-					      <option value="c"<c:out value="${scri.searchType eq 'c' ? 'selected' : ''}"/>>내용</option>
-					      <option value="w"<c:out value="${scri.searchType eq 'w' ? 'selected' : ''}"/>>작성자</option>
-					      <option value="tc"<c:out value="${scri.searchType eq 'tc' ? 'selected' : ''}"/>>제목+내용</option>
-					    </select>                           <!--  selected는 미리 선택되는것  value에서의 값이 scri의 searchType에 -->                            
-						</div>
-					   <div class="col-xs-10 col-sm-10">
-					    	<div class="input=group">
-					    		<input type="text" name="keyword" id="keywordInput" value="${scri.keyword}" class="form-control"/>
-								<span class="input-group-btn">
-					 				<button id="searchBtn" type="button" class="btn bttn-default">검색</button>
-					    		</span>
-					    	</div>
-					    </div>
-				   </div>
-					
 				<!-- 단순히 데이터를 띄우는것과 다름  -->
 				<!-- 페이징버튼 부분  -->
-				<h3></h3>
-				<div class="col-md-offset-3">
+				<div class="pagebutton">
 				  <ul class="pagination">   
 				    <c:if test="${pageMaker.prev}">  <!--  pageMaker.prev 가 true냐 false냐에 따라 생김 -->	
 				    	<li><a href="list${pageMaker.makeSearch(pageMaker.startPage - 1)}">이전</a></li>
@@ -143,10 +137,9 @@
 				    </c:if> 
 				  </ul>
 				</div>
-				</form>
-				
-			<hr/>
-			</div>
-		</div>
+			
+			</form>
+	       </div>
+		
 	</body>
 </html>

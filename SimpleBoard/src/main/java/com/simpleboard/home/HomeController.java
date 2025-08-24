@@ -3,8 +3,10 @@ package com.simpleboard.home;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -259,23 +261,22 @@ import com.simpleboard.service.ReplyService;
 		return "list";
 	}
 
-	// 게시판 삭제
+	// 게시글 삭제
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	public String delete(BoardVO boardVO ,Model model,@ModelAttribute("scri") SearchCriteria scri, RedirectAttributes rttr) throws Exception{
 		logger.info("delete");
-			
+		replyService.deleteAllReply(boardVO);
 		service.delete(boardVO.getBno());
+		
 		/*rttr.addAttribute("page", scri.getPage());
 		rttr.addAttribute("perPageNum", scri.getPerPageNum());
 		rttr.addAttribute("searchType", scri.getSearchType());
 		rttr.addAttribute("keyword", scri.getKeyword());
 		*/
 		model.addAttribute("list", service.list(scri));
-		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(scri);
 		pageMaker.setTotalCount(service.listCount(scri));
-		
 		model.addAttribute("pageMaker", pageMaker);
 					
 		return "list";
@@ -321,9 +322,21 @@ import com.simpleboard.service.ReplyService;
 		
 	//댓글 수정 POST
 	@RequestMapping(value="/replyUpdate", method = RequestMethod.POST)
-	public String replyUpdate(ReplyVO vo, SearchCriteria scri, RedirectAttributes rttr) throws Exception {
+	public String replyUpdate(ReplyVO vo, SearchCriteria scri, RedirectAttributes rttr, HttpServletRequest request) throws Exception {
+		
+		String text = request.getParameter("getcontent");
+		int rnumber = Integer.parseInt(request.getParameter("rno"));   
+		int bnumber = Integer.parseInt(request.getParameter("bno"));   
+		System.out.println("테스트1 "+ text);
+		System.out.println("테스트2 "+ rnumber);
+		System.out.println("테스트3 "+ bnumber);
 		logger.info("reply Write");
-			
+		
+		vo.setBno(bnumber);
+		vo.setContent(text);
+		vo.setRno(rnumber);
+		
+		System.out.println("테스트333 ");
 		replyService.updateReply(vo);
 			
 		rttr.addAttribute("bno", vo.getBno());
@@ -331,7 +344,7 @@ import com.simpleboard.service.ReplyService;
 		rttr.addAttribute("perPageNum", scri.getPerPageNum());
 		rttr.addAttribute("searchType", scri.getSearchType());
 		rttr.addAttribute("keyword", scri.getKeyword());
-			
+		logger.info("reply Write2");	
 		return "redirect:/readView";
 	}
 	
@@ -347,11 +360,14 @@ import com.simpleboard.service.ReplyService;
 		return "replyDeleteView";
 	}
 		
-	//댓글 삭제
+	//댓글 삭제 post
 	@RequestMapping(value="/replyDelete", method = RequestMethod.POST)
-	public String replyDelete(ReplyVO vo, SearchCriteria scri, RedirectAttributes rttr) throws Exception {
+	public String replyDelete(ReplyVO vo, SearchCriteria scri, RedirectAttributes rttr ,HttpServletRequest request) throws Exception {
 		logger.info("reply Write");
-			
+		
+		int rnumber = Integer.parseInt(request.getParameter("rno"));
+		vo.setRno(rnumber);
+		
 		replyService.deleteReply(vo);
 			
 		rttr.addAttribute("bno", vo.getBno());
@@ -410,9 +426,9 @@ import com.simpleboard.service.ReplyService;
 			model.addAttribute("msg", false);
 			return "login";
 		}else {
-			session.setAttribute("userid", vo.getUserId());
+			session.setAttribute("userid", vo.getUserId().toLowerCase());
 			session.setAttribute("member", login);
-			// 세션을 만들고 userid에 vo.getuserId()값을 member에 login(MemberVo 객체를 담음) list jsp파일에 보내짐 
+			// 세션을 만들고 userid에 vo.getuserId()값을   member에 login(MemberVo 객체를 담음) list jsp파일에 보내짐 
 		}
 		return "main";
 	}
@@ -452,28 +468,37 @@ import com.simpleboard.service.ReplyService;
 	@RequestMapping(value="/memberDelete", method = RequestMethod.POST)
 	public String memberDelete(MemberVO vo, HttpSession session, Model model) throws Exception{
 		logger.info("memberDelete");
+		
 		MemberVO member = (MemberVO)session.getAttribute("member");
+		if (member == null) {
+	        return "redirect:/login"; // 로그인 안 된 상태
+	    }
+		
 		String sessionPass = member.getUserPass();
 		String voPass = vo.getUserPass();
-	
+		
+		
 		if(!(sessionPass.equals(voPass))) {
 			model.addAttribute("msg",false);
-			return "memberDeleteView";
+			return "memberUpdateView";
 		}
 		
 		mbservice.memberDelete(vo);
 		session.invalidate();
-		logger.info("memberDelete session 제거? ");
-		return "main";
+		logger.info("memberDelete session 제거 ");
+		return "redirect:/main";
 	}
 	
 	// 패스워드 체크 (ajax 구현란)
 	@ResponseBody 
 	@RequestMapping(value="/passChk", method = RequestMethod.POST)
-	public int passChk(MemberVO vo) throws Exception{
+	public Map<String, Integer> passChk(MemberVO vo) throws Exception{
 		logger.info("passChk");
 		int result = mbservice.passChk(vo);
-		return result;
+		Map<String , Integer> map = new HashMap<>();
+		map.put("result", result);
+		return map;
+		
 	}
 	
 	// 아이디 중복체크 (ajax 구현란)
@@ -483,8 +508,6 @@ import com.simpleboard.service.ReplyService;
 		int result = mbservice.idChk(vo);
 		return result;
 	}
-	
-	
-		
+			
 	
 }

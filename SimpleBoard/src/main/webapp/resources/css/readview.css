@@ -1,0 +1,72 @@
+@charset "UTF-8";
+
+.readbody1{
+	position: relative; 
+	top: 100px;
+}
+
+.boardtext{
+	color: #337ab7;
+	
+}
+
+.readbody2{
+	position: relative; 
+	top: 100px;
+}
+
+.title1{
+	border: none;
+	outline: none;
+ }
+
+.readbody3{
+	position: relative; 
+	top: 120px;
+}
+
+.contentarea{
+	width: 90%; 
+	height: 200px;
+	resize: none;
+}
+
+.readbody4{
+	position: relative; 
+	top: 125px;	
+}
+
+.writername{
+	
+}
+
+.readbody5{
+	position: relative; 
+	top: 125px;	
+}
+
+.writer{
+	text-transform: none;
+}
+
+.regdate{
+	
+}
+
+.readbody6{
+	position: relative; 
+	top: 125px;	
+}
+
+.replybody1{
+	position: relative; 
+	top: 125px;	
+}
+
+
+.replybody2{
+	position: relative; 
+	top: 125px;
+}
+
+

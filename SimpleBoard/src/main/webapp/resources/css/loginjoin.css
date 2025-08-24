@@ -1,0 +1,107 @@
+@charset "UTF-8";
+
+/* 로그인화면 부분 */
+.bodylogin{
+  width: 100%; 
+  height: 100%;
+  display:flex;
+  justify-content: center; /* 가로 중앙 정렬 */
+  align-items: center;
+}
+
+.loginform1{
+	border:5px solid #337ab7;
+	width:20%;
+	height:30%;
+}
+
+.loginform2{
+	width:100%;
+	height:100%;
+	overflow:auto;
+ }
+ 
+.loginid{
+   width:100%;
+   
+ }
+
+.input3{
+   width:100%;
+ }
+
+h2{
+  color:#337ab7;
+  text-align: center;
+ }
+  
+ 
+ /* 회원가입 부분 */
+ .bodyjoin{
+ 	width:100%; 
+    height:100%;
+ 	display:flex;
+  	justify-content:center; /* 가로 중앙 정렬 */
+  	align-items:center; /* 세로 중앙 정렬 */
+    
+ }
+ 
+ .joinform1{
+ 	border:5px solid #337ab7;
+	width:20%;
+	height:45%;
+	
+ }
+ 
+ .joinform2{
+	width:100%;
+	height:100%;
+ }
+ 
+ 
+ .joinid{
+   width:100%;
+   
+ }
+   
+ .input2{
+   width:100%;
+ }
+ 
+ /*회원정보 수정칸*/
+ 
+ .bodyupdate{
+ 	width:100%; 
+    height:100%;
+ 	display:flex;
+  	justify-content:center; /* 가로 중앙 정렬 */
+  	align-items:center; /* 세로 중앙 정렬 */
+ }
+ 
+ .updateform1{
+ 	border:5px solid #337ab7;
+	width:20%;
+	height:27%;
+ }
+ 
+ .updateform2{
+ 	width:100%;
+	height:100%;
+	overflow:auto;
+ }
+ 
+ .updatemember{
+ 	width:100%;
+ }
+ 
+ .input3{
+   width:100%;
+ }
+ 
+ .buttonmember{
+ 	width:100%;
+ 	overflow: auto;
+ }
+
+  
+ 

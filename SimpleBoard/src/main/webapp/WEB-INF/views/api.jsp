@@ -26,43 +26,52 @@
     <!-- Jquery 동적인 움직임을 위해 필요함? -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <!--  chart.js -->
-    
-	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>	
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>	
 
+	<!--  css update -->
+	<link href="resources/css/update.css" rel="stylesheet" type="text/css">
 	
 </head>
 
 	<body>
-      <div class="container">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="#">SimpleBoard</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="/home/api">API사용</a></li>
-            <li><a href="/home/list">게시판</a></li>
-          	<li><a href="/home/main">ReadMe</a></li>
+      
+        <div class ="fixed">
+          <div>
+          <a class="title" href="#">SimpleBoard</a>
+        
+          <ul class="navigation1">
+            <li class="menu"><a href="/home/api">API사용</a></li>
+            <li class="menu"><a href="/home/list">게시판</a></li>
+          	<li class="menu"><a href="/home/main">ReadMe</a></li>
           </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <c:if test="${member != null}"> <!-- 세션에 있는것 씀 -->
-				<li>${member.userId}님 안녕하세요.</li>
-				<li><a href="/home/logout">로그아웃</a></li>
-			</c:if>
+          
+          <ul class="lognavigation">
+          	<c:if test="${member != null}">	
+          		<li class="menu">${member.userId}님</li>
+          	</c:if>
+          </ul>
+          <ul class="navigation2">
+            <c:if test="${member != null}"> <!-- 세션에 있는것 씀  -->
+				
+				<li class="menu"><a href="/home/logout">로그아웃</a></li>
+			</c:if> 
 			<c:if test="${member == null}">
-				<li><a href="/home/login">로그인</a></li>
+				<li class="menu"><a href="/home/login">로그인</a></li>
 			</c:if>
 			<c:if test="${member != null}">
-				<li class="active"><a href="/home/memberUpdateView">마이페이지</a></li>
+				<li class="menu"><a href="/home/memberUpdateView">마이페이지</a></li>
 			</c:if>
 			<c:if test="${member == null}">
-				 <li class="active"><a href="/home/register">회원가입</a></li>
+				 <li class="menu"><a href="/home/register">회원가입</a></li>
 			</c:if>
           </ul>
-        </div><!--/.nav-collapse -->
-       <div>
-       </div>
-
+          </div>
+		 </div>
+	  
+      
+      
       <!-- 박스 소개글 -->
+	  <div class = "down">    
 	      <div>
 	      	<p style="position:relative; left:25px">영화 OpenApi(JSON)방식 </p>
 	        <p style="position:relative; left:25px">지난주 기준</p>
@@ -80,9 +89,9 @@
 		        	<canvas id="pieChart"></canvas>
 		       </div>
 	      </div>
-         
-      </div>
-</body>
+      </div>   
+      
+	</body>
 	<script>
 		// 우선 컨텍스트를 가져옵니다. 
 		var ctx = document.getElementById("barChart").getContext('2d');

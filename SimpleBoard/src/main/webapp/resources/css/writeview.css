@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+.writebody1{
+	position:relative;
+	top:100px;
+	left:150px;
+}
+
+.boardtext{
+	color: #337ab7;
+}
+
+.writebody2{
+	position:relative;
+	top:100px;
+	left:150px;
+}
+
+.textcontents{
+	width: 70%; 
+	height: 200px;
+	resize: none;
+}
