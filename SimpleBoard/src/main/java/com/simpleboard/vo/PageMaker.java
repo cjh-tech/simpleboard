@@ -8,12 +8,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 public class PageMaker {
 	
-	private int totalCount;
-	private int startPage;
-	private int endPage;
-	private boolean prev;
-	private boolean next;
-	private int displayPageNum = 10;
+	private int totalCount;  //게시글 총갯수
+	private int startPage;  // 보여지는 페이지 숫자중 첫번째 숫자  1 2 3 4 5 6 7 8 9 10 에서1번
+	private int endPage;    // 보여지는 페이지 숫자중 마지막 숫자 1 2 3 4 5 6 7 8 9 10 에서10번
+	private boolean prev;   //이전버튼
+	private boolean next;   // 다음버튼
+	private int displayPageNum = 10; // 하단 페이지번호가 5개 묶음인지 10개묶음인지 정하는곳 
 	
 	private Criteria cri; //기준점 파일
 	
@@ -57,9 +57,9 @@ public class PageMaker {
 	private void calcData() {
 		endPage = (int) (Math.ceil(cri.getPage() / (double)displayPageNum) * displayPageNum); 
 		//끝나는 페이지  Math.ceil 올림 함수//  (criteria 파일의 getPage() 값을 displayPageNum으로 나눔) 곱하기 디스플레이페이지번호  
-		
+		System.out.println("endPage~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "+endPage);
 		startPage = (endPage - displayPageNum) + 1; // 시작페이지 -> 끝나는 페이지 - 보여주는 페이지  +1
-													//             
+		System.out.println("startPage~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "+startPage);										//             
 		int tempEndPage = (int) (Math.ceil(totalCount / (double)cri.getPerPageNum()));
 		if (endPage > tempEndPage) {
 			endPage = tempEndPage;

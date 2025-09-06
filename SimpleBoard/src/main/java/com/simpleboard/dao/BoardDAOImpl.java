@@ -25,7 +25,7 @@ public class BoardDAOImpl implements BoardDAO {
 		sqlSession.insert("boardMapper.insert", boardVO);
 		//        .insert 부분은 따로만든 메서드가 아니라 sqlSession안에 있는 메서드이다. 
 	}
-	// 테스트용 리스트 호출이라고 생각됨
+	// 극초기 리스트 호출
 	@Override
 	public List<BoardVO> list() throws Exception{
 		return sqlSession.selectList("boardMapper.list");
